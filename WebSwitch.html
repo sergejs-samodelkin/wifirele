@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]> <html class="lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]> <html class="lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Simple Toggle Switch</title>
+  <style>
+.container {
+    margin: 50px auto;
+    text-align: center;
+    width: 280px;
+}
+.container > .switch {
+    display: block;
+    margin: 12px auto;
+}
+.switch {
+    background-color: white;
+    background-image: linear-gradient(to bottom, #eeeeee, white 25px);
+    border-radius: 18px;
+    box-shadow: 0 -1px white inset, 0 1px 1px rgba(0, 0, 0, 0.05) inset;
+    cursor: pointer;
+    display: inline-block;
+    height: 20px;
+    padding: 3px;
+    position: relative;
+    vertical-align: top;
+    width: 56px;
+}
+.switch-input {
+    left: 0;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+}
+.switch-label {
+    background: #eceeef none repeat scroll 0 0;
+    border-radius: inherit;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12) inset, 0 0 2px rgba(0, 0, 0, 0.15) inset;
+    display: block;
+    font-size: 10px;
+    height: inherit;
+    position: relative;
+    text-transform: uppercase;
+    transition: all 0.15s ease-out 0s;
+}
+.switch-label::before, .switch-label::after {
+    line-height: 1;
+    margin-top: -0.5em;
+    position: absolute;
+    top: 50%;
+    transition: inherit;
+}
+.switch-label::before {
+    color: #aaa;
+    content: attr(data-off);
+    right: 11px;
+    text-shadow: 0 1px rgba(255, 255, 255, 0.5);
+}
+.switch-label::after {
+    color: white;
+    content: attr(data-on);
+    left: 11px;
+    opacity: 0;
+    text-shadow: 0 1px rgba(0, 0, 0, 0.2);
+}
+.switch-input:checked ~ .switch-label {
+    background: #47a8d8 none repeat scroll 0 0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15) inset, 0 0 3px rgba(0, 0, 0, 0.2) inset;
+}
+.switch-input:checked ~ .switch-label::before {
+    opacity: 0;
+}
+.switch-input:checked ~ .switch-label::after {
+    opacity: 1;
+}
+.switch-handle {
+    background: white linear-gradient(to bottom, white 40%, #f0f0f0) repeat scroll 0 0;
+    border-radius: 10px;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+    height: 18px;
+    left: 4px;
+    position: absolute;
+    top: 4px;
+    transition: left 0.15s ease-out 0s;
+    width: 18px;
+}
+.switch-handle::before {
+    background: #f9f9f9 linear-gradient(to bottom, #eeeeee, white) repeat scroll 0 0;
+    border-radius: 6px;
+    box-shadow: 0 1px rgba(0, 0, 0, 0.02) inset;
+    content: "";
+    height: 12px;
+    left: 50%;
+    margin: -6px 0 0 -6px;
+    position: absolute;
+    top: 50%;
+    width: 12px;
+}
+.switch-input:checked ~ .switch-handle {
+    box-shadow: -1px 1px 5px rgba(0, 0, 0, 0.2);
+    left: 40px;
+}
+.switch-green > .switch-input:checked ~ .switch-label {
+    background: #4fb845 none repeat scroll 0 0;
+}
+  </style>
+  <script language="JavaScript">
+<!--
+   var pause = false;
+   function reqListener () {
+     var json = this.responseText;
+     console.log(json);
+     parseState(json);
+   }
+
+   function sendState() {
+     var param = "c=";
+     for(var i=1; i<5; i++) {
+        param+=(document.getElementById("line"+i).checked?1:0);
+     }
+     console.log(param);
+     var oReq = new XMLHttpRequest();
+     oReq.timeout = 10000;
+     oReq.addEventListener("load", reqListener);
+     oReq.open("GET", "do?"+param);
+     oReq.ontimeout = sendState;
+     oReq.send();
+   }
+   function parseState(json) {
+     var js = eval("a="+json);
+     for(var i=1; i<5; i++) {
+        document.getElementById("line"+i).checked = js["line"+i] == 1 ? true : false;
+     } 
+   }
+   function updateState() {
+     var oReq = new XMLHttpRequest();
+     oReq.timeout = 10000;
+     oReq.addEventListener("load", reqListener);
+     oReq.open("GET", "check");
+     oReq.send();
+     setTimeout(updateState, 60000);
+   }
+   updateState();
+-->
+  </script>
+</head>
+<body>
+  <div class="container">
+    <table>
+      <tr><th>Line 1</th><td>
+        <label class="switch switch-green">
+          <input type="checkbox" class="switch-input" onChange="sendState()" id="line1">
+          <span class="switch-label" data-on="On" data-off="Off"></span>
+          <span class="switch-handle"></span>
+        </label>
+      </td></tr>
+      <tr><th>Line 2</th><td>
+        <label class="switch switch-green">
+          <input type="checkbox" class="switch-input" onChange="sendState()" id="line2">
+          <span class="switch-label" data-on="On" data-off="Off"></span>
+          <span class="switch-handle"></span>
+        </label>
+      </td></tr>
+      <tr><th>Line 3</th><td>
+        <label class="switch switch-green">
+          <input type="checkbox" class="switch-input" onChange="sendState()" id="line3">
+          <span class="switch-label" data-on="On" data-off="Off"></span>
+          <span class="switch-handle"></span>
+        </label>
+      </td></tr>
+      <tr><th>Line 4</th><td>
+        <label class="switch switch-green">
+          <input type="checkbox" class="switch-input" onChange="sendState()" id="line4">
+          <span class="switch-label" data-on="On" data-off="Off"></span>
+          <span class="switch-handle"></span>
+        </label>
+      </td></tr>
+    </table>
+  </div>
+</body>
+</html>
